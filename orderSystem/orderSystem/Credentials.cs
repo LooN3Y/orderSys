@@ -8,7 +8,7 @@ namespace orderSystem
 {
     public static class Credentials
     {
-        public string[] Get()
+        public static string[] Get()
         {
             return new string[] { "admin", "password" };
         }

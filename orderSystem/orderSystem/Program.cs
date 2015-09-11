@@ -12,50 +12,51 @@ namespace orderSystem
         static void Main(string[] args)
         {
             string userName, userPass, line;
-            string uName, uPass;
+            string uName = "";
+            string uPass = "";
 
             Console.Write("Name: ");
             userName = Console.ReadLine();
 
             Console.Write("Password: ");
             userPass = Console.ReadLine();
-
-            Console.WriteLine("Name: " + userName + ", Pass: " + userPass + ".");
-
+            
             string filePath = "credentials.Evoker";
-
+            // File check
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("File not found.");
             }
+            // File is there
             else
             {
                 StreamReader file = new StreamReader(filePath);
                 while ((line = file.ReadLine()) != null)
                 {
-                    Console.WriteLine(line);
+                    // If its a "valid" line
                     if (line.IndexOf(":") != -1)
                     {
-                        int labelLen = line.IndexOf(":") - 1;
                         int dataLen = line.Length - line.IndexOf(":") - 1;
-
+                        int dataStart = line.IndexOf(":") + 1;
 
                         if (line.Contains("username"))
                         {
-                            // uName = ...
-                            // check userName / uName
+                            uName = line.Substring(dataStart, dataLen);
+                            // Console.WriteLine("Username: " + uName);
                         }
                         else if (line.Contains("password"))
                         {
-                            // uPass = ...
-                            // check userPass / uPass
+                            uPass = line.Substring(dataStart, dataLen);
+                            // Console.WriteLine("Password: " + uPass);
                         }
-
-                        // just for testin
-                        Console.WriteLine("Label: " + labelLen + ", Data: " + dataLen + ", break@ " + line.IndexOf(":") + " whole: " + line.Length);
-
                     }
                 }
+                // ======= CHECKS
+                if (Equals(userName, uName) && Equals(userPass, uPass))
+                    Console.WriteLine("\nLogin Success!");
+                else
+                    Console.WriteLine("\nGTFO!");
+
             }
             Console.ReadLine();
         }

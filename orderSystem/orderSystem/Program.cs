@@ -12,23 +12,18 @@ namespace orderSystem
         static void Main(string[] args)
         {
             string username, password;
-            string dataFile = "credentials.Evoker";
 
             Console.Write("Username: ");
             username = Console.ReadLine();
             Console.Write("Password: ");
             password = Console.ReadLine();
 
-            user input = new user(username, password);
+            User userInfo = new User(username, password);
 
-            user fromFile = new user(dataFile);
+            Authenticator authorize = new Authenticator(userInfo);
+            Login toLogin = new Login(authorize.Check(), userInfo);
 
-            login login = new login(input, fromFile);
-
-            if (login.check(input, fromFile))
-                Console.Write("Welcome!");
-            else
-                Console.WriteLine("GTFO!");
+            Console.WriteLine(toLogin.LoginTask());
 
             Console.ReadLine();
         }

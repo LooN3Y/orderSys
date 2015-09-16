@@ -7,43 +7,41 @@ using System.IO;
 
 namespace orderSystem
 {
-    class user
+    class User
     {
-        private string username, password, line;
+        private string _username, _password;
 
-        // Constructor that takes a filepath and sets the username/password accordingly
-        public user(string dataFilePath)
+        public string username
         {
-            // Check for file
-            if (File.Exists(dataFilePath))
+            get { return this._username; }
+            set
             {
-                StreamReader sr = new StreamReader(dataFilePath);
-                while ( (line = sr.ReadLine()) != null)
-                {
-                    string[] data = line.Split(':');
-                    if (data[0].Contains("username"))
-                        username = data[1];
-                    else if (data[0].Contains("password"))
-                        password = data[1];
-                }
+                if (string.IsNullOrEmpty(value))
+                    throw new Exception("Username should not be empty!");
+                else
+                    this._username = value;
             }
-            
         }
-
-        // Constructor that takes username/password as input
-        public user(string name, string pass)
+        public string password
         {
-            this.username = name;
-            this.password = pass;
+            get { return this._password; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new Exception("Password should not be empty!");
+                else
+                    this._password = value;
+            }
         }
-
-        public string getuName()
+        
+        /*
+         * Constructor.
+         * Input: username, password (strings)
+         */
+        public User(string uName, string uPass)
         {
-            return username;
-        }
-        public string getuPass()
-        {
-            return password;
+            this._username = uName;
+            this._password = uPass;
         }
     }
 }

@@ -7,69 +7,39 @@ using System.IO;
 
 namespace orderSystem
 {
-    class login
+    /*
+     * Class that after user authentication, performs the login task
+     */
+    class Login
     {
-        // Log file path
-        private static string logFilePath = "log.txt";
-        private bool loggedIn = false;
-        private bool logit = false;
+        private bool _authSuccess;
+        private User _inputUser;
 
-        /*
-         * Main Constructor
-         * Input:
-         *      inputData = user object containing user's inputed username password
-         *      fileData = username/password to authenticate with (read from file in this solution)
-         */
-        public login(user inputData, user fileData)
+        public Login(bool status, User usr)
         {
-            // Authenticate
-            if (loggedIn = check(inputData, fileData))
-            {
-                // Log the user login 
-                logit = log(inputData);
-            }
+            this._authSuccess = status;
+            this._inputUser = usr;
         }
 
         /*
-         * Method that log's the succesfull login info into a file
-         * Retrns true if succesfull
+         * Logs succesfull login attempt in log file
          */
-        public bool log(user user)
+        public string LoginTask()
         {
-            // Text line to log:
-            string logLine = "User: " + user.getuName() + " (" + user.getuPass() + "), logged in at: " + DateTime.Now + Environment.NewLine;
-
-            if (!File.Exists(logFilePath)) // Q = Why include system.IO ???
+            if (this._authSuccess)
             {
-                File.WriteAllText(logFilePath, logLine);
-                return true;
+                string line = "\n> User: " + _inputUser.username + " logged in at: " + DateTime.Now + Environment.NewLine;
+                // Log method call:
+                Logger.Log(line);
+                return "\n> Welcome!";
             }
-            else if (File.Exists(logFilePath))
+            else
             {
-                File.AppendAllText(logFilePath, logLine);
-                return true;
+                string line = "\n> User: " + _inputUser.username + " tried to login at: " + DateTime.Now + Environment.NewLine;
+                // Log method call:
+                Logger.Log(line, "falseLogins.txt");
+                return "\n> Try again...";
             }
-            // Log to file attempth FAILED
-            return false;
-        }
-
-        /*
-         * Method that returns true if user is Valid 
-         */
-        public bool check(user inputData, user fileData)
-        {
-            if (String.Equals(inputData.getuName(),fileData.getuName()) && String.Equals(inputData.getuPass(),fileData.getuPass()) )
-                return true;
-            return false;
-        }
-
-        public bool getLoginStatus()
-        {
-            return this.loggedIn;
-        }
-        public bool getLogStatus()
-        {
-            return this.logit;
         }
     }
 }
